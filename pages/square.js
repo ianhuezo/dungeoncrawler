@@ -18,6 +18,8 @@ function Square(props){
         backgroundColor: props.color
     }
 
+    const node = props.node
+
     return(
         <div style={Object.assign(squareStyle, position)}>
 

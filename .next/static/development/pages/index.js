@@ -159,36 +159,6 @@ function _createClass(Constructor, protoProps, staticProps) {
 
 /***/ }),
 
-/***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js ***!
-  \***************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _defineProperty; });
-/* harmony import */ var _core_js_object_define_property__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../core-js/object/define-property */ "./node_modules/@babel/runtime-corejs2/core-js/object/define-property.js");
-/* harmony import */ var _core_js_object_define_property__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_core_js_object_define_property__WEBPACK_IMPORTED_MODULE_0__);
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    _core_js_object_define_property__WEBPACK_IMPORTED_MODULE_0___default()(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-/***/ }),
-
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js ***!
@@ -270,6 +240,22 @@ function _possibleConstructorReturn(self, call) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/readOnlyError.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/readOnlyError.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return _readOnlyError; });
+function _readOnlyError(name) {
+  throw new Error("\"" + name + "\" is read-only");
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime-corejs2/helpers/esm/setPrototypeOf.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/@babel/runtime-corejs2/helpers/esm/setPrototypeOf.js ***!
@@ -326,6 +312,23 @@ function _typeof(obj) {
 
   return _typeof(obj);
 }
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
 
 /***/ }),
 
@@ -16441,6 +16444,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./room */ "./pages/room.js");
+/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_room__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _level__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./level */ "./pages/level.js");
 var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\index.js";
 
@@ -16448,18 +16452,16 @@ var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\index.js";
 
 
 function Home() {
-  var room = new _room__WEBPACK_IMPORTED_MODULE_1__["default"](10, 10);
-  room.buildCooridor('l');
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 10
+      lineNumber: 7
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_level__WEBPACK_IMPORTED_MODULE_2__["default"], {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 11
+      lineNumber: 8
     },
     __self: this
   }));
@@ -16501,15 +16503,15 @@ var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\level.js";
 
 var screen = {
   width: '1000px',
-  height: '600px',
+  height: '800px',
   backgroundColor: 'grey',
   margin: '0 auto'
 };
 var squareContainer = {
   margin: '0 auto',
   position: 'relative',
-  top: '10%',
-  width: '70%',
+  length: '100%',
+  width: '100%',
   padding: 0,
   border: 0,
   fontSize: 0,
@@ -16528,67 +16530,138 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__["default"])(Level).call(this, props)); //row col for new map
 
-    _this.board = new _map__WEBPACK_IMPORTED_MODULE_6__["default"]([5, 50], 80, 50);
+    _this.board = new _map__WEBPACK_IMPORTED_MODULE_6__["default"](100, 80);
     _this.pixelSize = 8;
     _this.arr2d = _this.board.contents;
     return _this;
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(Level, [{
-    key: "render",
-    value: function render() {
+    key: "componentWillMount",
+    value: function componentWillMount() {
       var _this2 = this;
 
-      var squares = _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(this.arr2d).map(function (el, i) {
+      var id = 0;
+      this.squares = _babel_runtime_corejs2_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(this.arr2d).map(function (el, i) {
         var offsetY = i * _this2.pixelSize;
 
         var single = _this2.arr2d[el].map(function (sub_el, j) {
-          var offsetX = j * _this2.pixelSize;
+          var offsetX = j * _this2.pixelSize; //sides
 
-          if (sub_el == 'O') {
+          if (sub_el.type == 'X') {
+            {
+              id += 1;
+            }
             return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
+              key: id,
               x: offsetX,
               y: offsetY,
               size: _this2.pixelSize,
-              color: "white",
+              node: sub_el,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 44
+                lineNumber: 46
               },
               __self: this
             });
-          } else {
-            return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
-              x: offsetX,
-              y: offsetY,
-              size: _this2.pixelSize,
-              __source: {
-                fileName: _jsxFileName,
-                lineNumber: 47
-              },
-              __self: this
-            });
-          }
+          } //corner (should be next to clear blocks)
+          else if (sub_el.type == 'C') {
+              {
+                id += 1;
+              }
+              return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                key: id,
+                x: offsetX,
+                y: offsetY,
+                size: _this2.pixelSize,
+                node: sub_el,
+                __source: {
+                  fileName: _jsxFileName,
+                  lineNumber: 52
+                },
+                __self: this
+              });
+            } //the gooey insides
+            else if (sub_el.type == 'L') {
+                {
+                  id += 1;
+                }
+                return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                  key: id,
+                  x: offsetX,
+                  y: offsetY,
+                  size: _this2.pixelSize,
+                  color: "red",
+                  node: sub_el,
+                  __source: {
+                    fileName: _jsxFileName,
+                    lineNumber: 58
+                  },
+                  __self: this
+                });
+              } //hallways
+              else if (sub_el.type == 'H') {
+                  {
+                    id += 1;
+                  }
+                  return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                    key: id,
+                    x: offsetX,
+                    y: offsetY,
+                    size: _this2.pixelSize,
+                    color: "white",
+                    node: sub_el,
+                    __source: {
+                      fileName: _jsxFileName,
+                      lineNumber: 64
+                    },
+                    __self: this
+                  });
+                } //blanks
+                else if (sub_el.type == '-') {
+                    {
+                      id += 1;
+                    }
+                    return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement(_square__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                      key: id,
+                      x: offsetX,
+                      y: offsetY,
+                      size: _this2.pixelSize,
+                      node: sub_el,
+                      __source: {
+                        fileName: _jsxFileName,
+                        lineNumber: 70
+                      },
+                      __self: this
+                    });
+                  }
         });
 
+        {
+          id += 1;
+        }
         return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
+          key: id,
           style: squareContainer,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 51
+            lineNumber: 75
           },
           __self: this
         }, " ", single);
       });
-
+    }
+  }, {
+    key: "render",
+    value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_7___default.a.createElement("div", {
         style: screen,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 56
+          lineNumber: 82
         },
         __self: this
-      }, squares);
+      }, this.squares);
     }
   }]);
 
@@ -16608,9 +16681,12 @@ function (_React$Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
-/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./room */ "./pages/room.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_readOnlyError__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/readOnlyError */ "./node_modules/@babel/runtime-corejs2/helpers/esm/readOnlyError.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./room */ "./pages/room.js");
+/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_room__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -16618,30 +16694,537 @@ __webpack_require__.r(__webpack_exports__);
 var Map =
 /*#__PURE__*/
 function () {
-  function Map(boardPosition, boardWidth, boardLength) {
-    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Map);
+  function Map(boardWidth, boardlength) {
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, Map);
 
     //describes the boards with relative to amount of squares
     this.width = boardWidth;
-    this.length = boardLength;
-    this.position = boardPosition;
+    this.height = boardlength;
     this.clearedBoard = []; //initialize the board with a clear state
 
     this.clear();
     this.board = this.clearedBoard;
+    this.roomCounter = 8;
+    this.createRooms(this.roomCounter);
   }
 
-  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Map, [{
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(Map, [{
     key: "clear",
     value: function clear() {
-      for (var i = 0; i < this.length; i++) {
+      for (var i = 0; i < this.height; i++) {
         var arr = [];
 
         for (var j = 0; j < this.width; j++) {
-          arr.push('-');
+          var emptyNodes = new _room__WEBPACK_IMPORTED_MODULE_3__["Node"]('-', [i, j]);
+          arr.push(emptyNodes);
         }
 
         this.clearedBoard.push(arr);
+      }
+    }
+  }, {
+    key: "createRooms",
+    value: function createRooms(roomNumber) {
+      var roomCount = roomNumber;
+      var randomSize = this.randomSize(5, 7);
+      var roomNode = new _room__WEBPACK_IMPORTED_MODULE_3__["Room"](randomSize[0], randomSize[1]); // //create some halls
+
+      var halls = this.generateHalls(2); //initialize queue
+
+      var position = [25, 40];
+      var halls = this.generateHalls(2);
+
+      for (var i = 0; i < halls.length; i++) {
+        roomNode.buildCooridor(halls[i]);
+      }
+
+      roomNode.changePosition(position);
+      roomNode.visited = true;
+      this.placeRoom(roomNode);
+      var queue = [];
+      queue.push(roomNode);
+      var randomCount = 5;
+
+      while (queue.length) {
+        var node = queue.shift(0);
+
+        if (node) {
+          var rooms = this.generateRooms(node);
+
+          for (var i = 0; i < rooms.length; i++) {
+            this.placeRoom(rooms[i]);
+            queue.push(rooms[i]);
+          }
+
+          randomCount -= 1;
+        }
+
+        randomCount -= 1;
+      }
+    } //methods for the right
+
+  }, {
+    key: "searchRightColPosition",
+    value: function searchRightColPosition(rowIdx, colSpan) {
+      var l = colSpan[0];
+      var r = colSpan[1];
+      var span = r - l;
+      var counter = 0; //if the index is not filled then you're fine, return r
+
+      if (this.board[rowIdx][r].filled == false) {
+        return [l, r];
+      } //else if its a bad index binary search for a good one unless there isn't one
+      else {
+          while (this.board[rowIdx][r].filled == true && counter < 3) {
+            var half = Math.floor(span / 2 + l);
+            console.log('Right col is readjusting...');
+
+            if (this.board[rowIdx][half].filled == false) {
+              return [l, half];
+            } else {
+              span = half - 1;
+            }
+
+            counter += 1;
+          }
+        }
+
+      return null;
+    } //shared method for both left and right
+
+  }, {
+    key: "searchTopBottomRowPosition",
+    value: function searchTopBottomRowPosition(rowSpan, colIdx) {
+      //returns an array of the top and bottom indices for the rows
+      var t = rowSpan[0] + 1;
+      var b = rowSpan[1] + 1; //the span of the rows
+
+      var span = Math.abs(t - b); //offset by half
+
+      t = t - Math.floor(span / 3);
+
+      if (t < 0) {
+        t = 0;
+      }
+
+      b = b - Math.floor(span / 3);
+      var counter = 0; //search both top and bottom for a good offset
+
+      if (this.board[t][colIdx].filled == false && this.board[b][colIdx].filled == false) {
+        return [t, b];
+      } //quarters
+      else {
+          while (this.board[t][colIdx].filled == false && this.board[b][colIdx].filled == false && counter < 3) {
+            console.log('Top Bottom is readjusting...');
+            var topQuartile = Math.ceil(span / 4 + t); //because bottom is lower in count...
+
+            var bottomQuartile = Math.ceil(b - span / 4);
+
+            if (this.board[topQuartile][colIdx].filled == true && this.board[bottomQuartile][colIdx].filled == true) {
+              return [topQuartile, bottomQuartile];
+            } //could be more complex statements  depending on the dungeon I decide
+            else {
+                t = Math.ceil(span / 4 + t) + 1;
+                b = Math.ceil(b - span / 4) - 1;
+              }
+
+            counter += 1;
+          }
+        }
+
+      return null;
+    }
+  }, {
+    key: "placeRight",
+    value: function placeRight(pos, dir) {
+      //need to account for the offset from the non filled room
+      pos = [pos[0] - 1, pos[1]];
+      var roomSize = this.randomSize(5, 7);
+      var rowSpan = [pos[0], pos[0] + roomSize[0]];
+      var colSpan = [pos[1], pos[1] + roomSize[1]]; //the positions returned are the span of the element indices
+
+      var colPosition = this.searchRightColPosition(pos[0], colSpan); //add 1 to cols to avoid looking at the hall's positions
+
+      var rowPosition = this.searchTopBottomRowPosition(rowSpan, pos[1] + 1);
+
+      if (rowSize < 4 || colSize < 4 || rowPosition == null || colPosition == null) {
+        return null;
+      } //position from the top left
+
+
+      var rowSize = Math.abs(rowPosition[1] - rowPosition[0]);
+      var colSize = Math.abs(colPosition[1] - colPosition[0]);
+      var room = new _room__WEBPACK_IMPORTED_MODULE_3__["Room"](rowSize, colSize); //position the room
+
+      var newPosition = [rowPosition[0], colPosition[0]];
+      var halls = this.generateHalls(2);
+
+      for (var i = 0; i < halls.length; i++) {
+        if (halls[i] == dir || this.roomCounter == 0) {
+          continue;
+        }
+
+        room.buildCooridor(halls[i]);
+        this.roomCounter -= 1;
+      }
+
+      room.changePosition(newPosition);
+      return room;
+    } //Methods for the left
+
+  }, {
+    key: "searchLeftColPosition",
+    value: function searchLeftColPosition(rowIdx, colSpan) {
+      var l = Math.abs(Math.floor(colSpan[0]));
+      var r = Math.abs(Math.floor(colSpan[1]));
+      var span = Math.abs(r - l);
+      var counter = 0; //if the index at l is not filled then you're fine, return
+
+      try {
+        if (this.board[rowIdx][l].filled == false) {
+          return [l, r];
+        } //else if its a bad index binary search for a good one unless there isn't one
+        else {
+            while (this.board[rowIdx][r].filled == true && counter < 3) {
+              var half = Math.floor(span / 4 + l);
+              console.log('Left col is readjusting...');
+
+              if (this.board[rowIdx][half].filled == false) {
+                return [l, half];
+              } else {
+                span = (Object(_babel_runtime_corejs2_helpers_esm_readOnlyError__WEBPACK_IMPORTED_MODULE_0__["default"])("span"), half - 1);
+              }
+
+              counter += 1;
+            }
+          }
+
+        return null;
+      } catch (e) {
+        console.log(rowIdx, l, r);
+      }
+    }
+  }, {
+    key: "placeLeft",
+    value: function placeLeft(pos, dir) {
+      //create the offsets for position and create the roomsize
+      var offset = [pos[0] - 1, pos[1]];
+      var roomSize = this.randomSize(5, 7);
+      var rowSpan = [offset[0], offset[0] + roomSize[1]];
+      var colSpan = [offset[1] - roomSize[1] + 1, offset[1]]; //the positions returned are the span of the element indices
+
+      var colPosition = this.searchLeftColPosition(rowSpan[0], colSpan);
+      var rowPosition = this.searchTopBottomRowPosition(rowSpan, pos[1] + 1);
+
+      if (rowSize < 4 || colSize < 4 || rowPosition == null || colPosition == null) {
+        return null;
+      }
+
+      var rowSize = Math.abs(rowPosition[1] - rowPosition[0]);
+      var colSize = Math.abs(colPosition[1] - colPosition[0]); //create and place the final room
+
+      var room = new _room__WEBPACK_IMPORTED_MODULE_3__["Room"](rowSize, colSize);
+      var position = [rowPosition[0], colPosition[0]];
+      var halls = this.generateHalls(2);
+
+      for (var i = 0; i < halls.length; i++) {
+        if (halls[i] == dir || this.roomCounter == 0) {
+          continue;
+        }
+
+        room.buildCooridor(halls[i]);
+        this.roomCounter -= 1;
+      }
+
+      room.changePosition(position);
+      return room;
+    } //top logic 
+
+  }, {
+    key: "placeTop",
+    value: function placeTop(pos, dir) {
+      //create the offsets for position and create the roomsize
+      var offset = [pos[0] + 1, pos[1]];
+      var roomSize = this.randomSize(5, 7);
+      var rowSpan = [offset[0] - roomSize[1], offset[0]];
+      var colSpan = [offset[1], offset[1] + roomSize[1]]; //the positions returned are the span of the element indices
+
+      var rowPosition = this.searchTopRowPosition(colSpan[0], rowSpan);
+      var colPosition = this.searchLeftRightPosition(colSpan, rowSpan[0]);
+
+      if (rowSize < 4 || colSize < 4 || rowPosition == null || colPosition == null) {
+        return null;
+      }
+
+      var rowSize = Math.abs(rowPosition[1] - rowPosition[0]);
+      var colSize = Math.abs(colPosition[1] - colPosition[0]);
+      var room = new _room__WEBPACK_IMPORTED_MODULE_3__["Room"](rowSize, colSize);
+      var halls = this.generateHalls(2);
+
+      for (var i = 0; i < halls.length; i++) {
+        if (halls[i] == dir || this.roomCounter == 0) {
+          continue;
+        }
+
+        room.buildCooridor(halls[i]);
+        this.roomCounter -= 1;
+      }
+
+      room.changePosition([rowPosition[0], colPosition[0]]);
+      return room;
+    }
+  }, {
+    key: "searchLeftRightPosition",
+    value: function searchLeftRightPosition(colSpan, rowIdx) {
+      var t = Math.abs(colSpan[0]);
+      var b = Math.abs(colSpan[1]); //the span of the rows
+
+      var span = Math.abs(t - b); //offset by half
+
+      t = t - Math.floor(span / 3);
+      b = b - Math.floor(span / 3);
+      t = Math.abs(t);
+      b = Math.abs(b);
+      rowIdx = Math.abs(rowIdx);
+      var counter = 0; //search both top and bottom for a good offset
+
+      if (this.board[rowIdx][t].filled == false && this.board[rowIdx][b].filled == false) {
+        return [t, b];
+      } //quarters
+      else {
+          while (this.board[rowIdx][t].filled == false && this.board[rowIdx][b].filled == false && counter < 3) {
+            var topQuartile = Math.ceil(span / 4 + t); //because bottom is lower in count...
+
+            var bottomQuartile = Math.ceil(b - span / 4);
+
+            if (this.board[rowIdx][topQuartile].filled == true && this.board[rowIdx][bottomQuartile].filled == true) {
+              return [topQuartile, bottomQuartile];
+            } //could be more complex statements  depending on the dungeon I decide
+            else {
+                t = Math.ceil(span / 4 + t) + 1;
+                b = Math.ceil(b - span / 4) - 1;
+              }
+
+            counter += 1;
+          }
+        }
+
+      return null;
+    }
+  }, {
+    key: "searchTopRowPosition",
+    value: function searchTopRowPosition(colIndex, rowSpan) {
+      var l = Math.abs(Math.floor(rowSpan[0]));
+      var r = Math.abs(Math.floor(rowSpan[1]));
+      var span = Math.abs(l - r);
+      var counter = 0; //if the index at l is not filled then you're fine, return 
+
+      if (this.board[l][colIndex].filled == false) {
+        return [l, r];
+      } //else if its a bad index binary search for a good one unless there isn'l one
+      else {
+          while (this.board[l][colIndex].filled == true && counter < 3) {
+            console.log('Top row is readjusting...');
+            var half = Math.floor(l + span / 4);
+
+            if (this.board[half][colIndex].filled == false) {
+              return [half, r];
+            } else {
+              span = half + 1;
+            }
+
+            counter += 1;
+          }
+        }
+
+      return null;
+    }
+  }, {
+    key: "searchBottomRowPosition",
+    value: function searchBottomRowPosition(colIndex, rowSpan) {
+      var l = rowSpan[0];
+      var r = rowSpan[1];
+      var span = Math.abs(l - r);
+      var counter = 0; //if the index at l is not filled then you're fine, return 
+
+      if (this.board[r][colIndex].filled == false) {
+        return [l, r];
+      } //else if its a bad index binary search for a good one unless there isn'l one
+      else {
+          while (this.board[l][colIndex].filled == true && counter < 3) {
+            var half = Math.floor(r - span / 4);
+            console.log('Bottom row is readjusting...');
+
+            if (this.board[half][colIndex].filled == false) {
+              return [half, r];
+            } else {
+              span = half - 1;
+            }
+
+            counter += 1;
+          }
+        }
+
+      return null;
+    } //bottom room logic
+
+  }, {
+    key: "placeBottom",
+    value: function placeBottom(pos, dir) {
+      //create the offsets for position and create the roomsize
+      var offset = [pos[0], pos[1]];
+      var roomSize = this.randomSize(5, 7);
+      var rowSpan = [offset[0], offset[0] + roomSize[0]];
+      var colSpan = [offset[1], offset[1] + roomSize[1]]; //the positions returned are the span of the element indices
+
+      var rowPosition = this.searchTopRowPosition(colSpan[0], rowSpan);
+      var colPosition = this.searchLeftRightPosition(colSpan, rowSpan[0]);
+
+      if (rowSize < 4 || colSize < 4 || rowPosition == null || colPosition == null) {
+        return null;
+      }
+
+      var rowSize = Math.abs(rowPosition[1] - rowPosition[0]);
+      var colSize = Math.abs(colPosition[1] - colPosition[0]);
+      var room = new _room__WEBPACK_IMPORTED_MODULE_3__["Room"](rowSize, colSize);
+      var halls = this.generateHalls(2);
+
+      for (var i = 0; i < halls.length; i++) {
+        if (halls[i] == dir || this.roomCounter == 0) {
+          continue;
+        }
+
+        room.buildCooridor(halls[i]);
+        this.roomCounter -= 1;
+      }
+
+      room.changePosition([rowPosition[0], colPosition[0]]);
+      return room;
+    } //where all rooms are generatred and created, the first room generated will have a large impact on the other rooms created
+
+  }, {
+    key: "generateRooms",
+    value: function generateRooms(node) {
+      var halls = node.halls;
+      var len = halls.length;
+      var rooms = [];
+      var newRoom = null;
+
+      for (var i = 0; i < len; i++) {
+        switch (halls[i].direction) {
+          case 'r':
+            newRoom = this.placeRight(halls[i].position, 'l');
+
+            if (newRoom) {
+              newRoom.parentHall = halls[i];
+              rooms.push(newRoom);
+            } else {
+              //remove the cooridor because it's not viable
+              this.roomCounter += 1;
+              node.removeCooridor(halls[i].direction);
+              this.placeRoom(node);
+            }
+
+            break;
+
+          case 'l':
+            newRoom = this.placeLeft(halls[i].position, 'r');
+
+            if (newRoom) {
+              newRoom.parentHall = halls[i];
+              rooms.push(newRoom);
+            } // else{
+            //     //remove the cooridor because it's not viable
+            //     this.roomCounter += 1
+            //     node.removeCooridor(halls[i].direction)
+            //     this.placeRoom(node)
+            // }
+
+
+            break;
+
+          case 't':
+            newRoom = this.placeTop(halls[i].position, 'b');
+
+            if (newRoom) {
+              newRoom.parentHall = halls[i];
+              rooms.push(newRoom);
+            } // else{
+            //     //remove the cooridor because it's not viable
+            //     this.roomCounter += 1a
+            //     node.removeCooridor(halls[i].direction)
+            //     this.placeRoom(node)
+            // }
+
+
+            break;
+
+          case 'b':
+            newRoom = this.placeBottom(halls[i].position, 't');
+
+            if (newRoom) {
+              newRoom.parentHall = halls[i];
+              rooms.push(newRoom);
+            } // else{
+            //     //remove the cooridor because it's not viable
+            //     this.roomCounter += 1
+            //     node.removeCooridor(halls[i].direction)
+            //     this.placeRoom(node)
+            // }
+
+
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      return rooms;
+    }
+  }, {
+    key: "generateHalls",
+    value: function generateHalls(num) {
+      var hallDirections = ['l', 'r', 't', 'b'];
+      var randomDirs = [];
+      var counter = num;
+
+      while (counter > -1) {
+        var idx = Math.floor(Math.random() * hallDirections.length + 0);
+        randomDirs.push(hallDirections[idx]);
+        hallDirections.splice(idx, 1);
+        counter -= 1;
+      }
+
+      return randomDirs;
+    }
+  }, {
+    key: "randomSize",
+    value: function randomSize(min, max) {
+      var length = Math.floor(Math.random() * max + min);
+      var width = Math.floor(Math.random() * max + min);
+      var arr = [length, width];
+      return arr;
+    }
+  }, {
+    key: "placeRoom",
+    value: function placeRoom(room) {
+      //where position is based on row, col for map
+      var rowLength = room.width;
+      var colLength = room.height;
+
+      for (var i = 0; i < rowLength; i++) {
+        for (var j = 0; j < colLength; j++) {
+          var row = room.contents[i][j].position[0];
+          var col = room.contents[i][j].position[1];
+
+          if (this.board[row][col].type !== 'H') {
+            this.board[row][col] = room.contents[i][j];
+            this.board[row][col].filled = true;
+          } else {
+            this.board[row][col].filled = true;
+          }
+        }
       }
     }
   }, {
@@ -16662,17 +17245,17 @@ function () {
 /*!***********************!*\
   !*** ./pages/room.js ***!
   \***********************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
 
 
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime-corejs2/helpers/interopRequireDefault */ "./node_modules/@babel/runtime-corejs2/helpers/interopRequireDefault.js");
 
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js"));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js"));
 
 var Node =
 /*#__PURE__*/
@@ -16680,28 +17263,31 @@ function () {
   //how the room itself views the node
   //will eventually put how the level itself views the
   function Node(roomWalls, position) {
-    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, Node);
-
+    (0, _classCallCheck2["default"])(this, Node);
     this.type = null;
     this.roomView = roomWalls; //position is [row, col] based
 
     this.position = position;
-    this.nextPosition = null;
-    this.filled = false;
+    this.filled = false; //only used for a subset of the nodes, the hallways
 
-    if (this.roomView == 'H') {
-      //means its a hallway/cooridor
-      this.type = 'H';
-    } else if (this.roomView.corner) {
-      //corner
-      this.type = 'C';
-    } //I don't allow corners to have rooms
-    else if (this.roomView.left || this.roomView.right || this.roomView.bottom || this.roomView.top) {
-        //
-        this.type = 'X';
-      } else {
-        this.type = 'O';
-      }
+    this.direction = ''; //empty tile
+
+    if (this.roomView == '-') {
+      this.type = '-';
+    } //means its a hallway/cooridor
+    else if (this.roomView == 'H') {
+        this.type = 'H';
+      } else if (this.roomView.corner) {
+        //corner
+        this.type = 'C';
+      } //sides of the room
+      else if (this.roomView.left || this.roomView.right || this.roomView.bottom || this.roomView.top) {
+          //
+          this.type = 'X';
+        } //the middle of the room
+        else {
+            this.type = 'L';
+          }
 
     this.left = false;
     this.right = false;
@@ -16710,7 +17296,7 @@ function () {
     this.determineBarriers();
   }
 
-  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(Node, [{
+  (0, _createClass2["default"])(Node, [{
     key: "determineBarriers",
     value: function determineBarriers() {
       switch (this.type) {
@@ -16719,7 +17305,7 @@ function () {
           break;
 
         case 'X':
-          this.fillNone();
+          this.fillAll();
 
         case 'C':
           this.fillAll();
@@ -16745,7 +17331,8 @@ function () {
       this.bottom = false;
       this.top = false;
       this.filled = false;
-    }
+    } //the room itself will create a cooridor from the nodes
+
   }, {
     key: "createCooridor",
     value: function createCooridor(direction) {
@@ -16784,7 +17371,6 @@ function () {
       }
     }
   }]);
-
   return Node;
 }();
 
@@ -16793,22 +17379,16 @@ var Room =
 function () {
   //default values for length and height
   function Room() {
-    var length = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : m_length;
-    var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : m_width;
-    var parentCooridor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
-    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_1__["default"])(this, Room);
-
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(this, "length", 10);
-
-    Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(this, "width", 10);
-
+    var height = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 10;
+    var width = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 10;
+    var parentHall = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    (0, _classCallCheck2["default"])(this, Room);
     //startingPoint is the [row, col]
-    this.length = length;
+    this.height = height;
     this.width = width; //the cooridor will decide starting position if there is a parent node with a cooridor being input
     //will overwrite the parents left, right, bottom, or top x and c's depending 
 
-    this.parent = parentCooridor;
+    this.parentHall = parentHall;
 
     if (this.parentCooridor != null) {} //a list of all the nodes that can put a cooridor
 
@@ -16817,13 +17397,16 @@ function () {
       left: [],
       right: [],
       top: [],
-      bottom: [] //construct the room with all of its nodes
-
+      bottom: []
     };
+    this.visited = false; //construct the room with halls
+
+    this.halls = [];
+    this.removedHalls = [];
     this.roomContents = this.constructRoom();
   }
 
-  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_2__["default"])(Room, [{
+  (0, _createClass2["default"])(Room, [{
     key: "constructRoom",
     value: function constructRoom() {
       var roomArea = [];
@@ -16837,7 +17420,7 @@ function () {
       {
         var roomRow = [];
 
-        for (var j = 0; j < this.length; j++) //col
+        for (var j = 0; j < this.height; j++) //col
         {
           //get all the logic for the walls
           var wallBooleans = this.isWall(i, j); //assign viable indices to reference later when buildling cooridors
@@ -16856,14 +17439,14 @@ function () {
     key: "buildViableCooridors",
     value: function buildViableCooridors(wall, position) {
       if (!wall.corner) {
-        if (wall.left) {
-          this.viableSides.left.push(position);
-        } else if (wall.right) {
-          this.viableSides.right.push(position);
-        } else if (wall.top) {
+        if (wall.top) {
           this.viableSides.top.push(position);
         } else if (wall.bottom) {
           this.viableSides.bottom.push(position);
+        } else if (wall.right) {
+          this.viableSides.right.push(position);
+        } else if (wall.left) {
+          this.viableSides.left.push(position);
         }
       }
     }
@@ -16871,10 +17454,14 @@ function () {
     key: "isWall",
     value: function isWall(row, col) {
       //all directions walls are in
-      var isLeft = col == 0 && row < this.length;
-      var isRight = col == this.length - 1 && row < this.width;
+      // const isLeft = (col == 0 && row < this.width)
+      // const isRight = (col == this.height - 1 && row < this.width)
+      // const isTop = (col < this.height - 1 && row == 0)
+      // const isBottom = (row == this.height)
       var isTop = row == 0;
-      var isBottom = row == this.length - 1; //corner cases
+      var isBottom = row == this.width - 1;
+      var isLeft = col == 0;
+      var isRight = col == this.height - 1; //corner cases
 
       var isTopLeft = isLeft && isTop;
       var isTopRight = isRight && isTop;
@@ -16895,6 +17482,47 @@ function () {
       };
     }
   }, {
+    key: "updatePosition",
+    value: function updatePosition(position) {
+      for (var i = 0; i < this.width; i++) {
+        for (var j = 0; j < this.height; j++) {
+          this.roomContents[i][j].position = [this.roomContents[i][j].position[0] + position[0], this.roomContents[i][j].position[1] + position[1]];
+        }
+      }
+    }
+  }, {
+    key: "updateSide",
+    value: function updateSide(key, position) {
+      var newArr = [];
+
+      for (var ele in this.viableSides[key]) {
+        newArr.push([ele[0] + position[0], ele[1] + position[1]]);
+      }
+
+      this.viableSides[key] = newArr;
+    }
+  }, {
+    key: "updateViableSides",
+    value: function updateViableSides(position) {
+      this.updateSide("left", position);
+      this.updateSide("righ", position);
+      this.updateSide("top", position);
+      this.updateSide("bottom", position);
+    }
+  }, {
+    key: "changePosition",
+    value: function changePosition(position) {
+      //where position is the position of the whole map wanted, will be from top left starting
+      //update regular room nodes
+      this.updatePosition(position); //update halls to new position
+      // this.updateViableSides(position)
+    }
+  }, {
+    key: "removeRoomCooridors",
+    value: function removeRoomCooridors(directions) {
+      if (this.halls) {}
+    }
+  }, {
     key: "buildCooridor",
     value: function buildCooridor(direction) {
       //direction is the input from map that will 
@@ -16906,40 +17534,46 @@ function () {
       switch (direction) {
         case 'l':
           randomPosition = this.viableSides.left.random();
+          break;
 
         case 'r':
           randomPosition = this.viableSides.right.random();
+          break;
 
         case 't':
           randomPosition = this.viableSides.top.random();
+          break;
 
         case 'b':
           randomPosition = this.viableSides.bottom.random();
+          break;
 
         default:
           break;
       }
 
+      if (randomPosition == null) {
+        return;
+      }
+
       var row = randomPosition[0];
-      var col = randomPosition[1];
-      console.log("The random position is ", row, col); //take the roomView attribute of the node
+      var col = randomPosition[1]; //take the roomView attribute of the node
+      //create the node and reference which direction it is to the room
 
       var cooridorNode = new Node('H', [row, col]);
-      cooridorNode.createCooridor(direction); //changes the x to become a cooridor, H
+      cooridorNode.createCooridor(direction);
+      cooridorNode.direction = direction;
+      this.halls.push(cooridorNode); //assign back to the room
 
-      this.roomContents[col][row] = cooridorNode;
+      this.roomContents[row][col] = cooridorNode;
     } //rooms could be different size, so go off the smaller room for merging
 
-  }, {
-    key: "mergeRoom",
-    value: function mergeRoom() {}
   }, {
     key: "contents",
     get: function get() {
       return this.roomContents;
     }
   }]);
-
   return Room;
 }(); //from https://stackoverflow.com/questions/5915096/get-random-item-from-javascript-array, because looked simple and elegant
 
@@ -16948,7 +17582,10 @@ Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Room);
+module.exports = {
+  Room: Room,
+  Node: Node
+};
 
 /***/ }),
 
@@ -16987,11 +17624,12 @@ function Square(props) {
     height: props.size + 'px',
     backgroundColor: props.color
   };
+  var node = props.node;
   return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
     style: _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default()(squareStyle, position),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 22
+      lineNumber: 24
     },
     __self: this
   });

@@ -6,24 +6,30 @@ class Node{
         this.roomView = roomWalls
         //position is [row, col] based
         this.position = position
-        this.nextPosition = null
         this.filled = false
-
-        if(this.roomView == 'H'){
-            //means its a hallway/cooridor
+        //only used for a subset of the nodes, the hallways
+        this.direction = ''
+        
+        //empty tile
+        if(this.roomView == '-'){
+            this.type = '-'
+        }
+        //means its a hallway/cooridor
+        else if(this.roomView == 'H'){
             this.type = 'H';
         }
         else if(this.roomView.corner){
             //corner
             this.type = 'C';
         }
-        //I don't allow corners to have rooms
+        //sides of the room
         else if(this.roomView.left || this.roomView.right || this.roomView.bottom || this.roomView.top){
             //
             this.type = 'X';
         }
+        //the middle of the room
         else{
-            this.type = 'O';
+            this.type = 'L';
         }
         this.left = false;
         this.right = false;
@@ -39,7 +45,7 @@ class Node{
                 this.fillAll()
                 break
             case 'X':
-                this.fillNone()
+                this.fillAll()
             case 'C':
                 this.fillAll()
             default:
@@ -62,7 +68,7 @@ class Node{
         this.top = false
         this.filled = false
     }
-
+    //the room itself will create a cooridor from the nodes
     createCooridor(direction){
         //input is char for the direction 
         switch(direction){
@@ -100,16 +106,14 @@ class Node{
 
 class Room{
     //default values for length and height
-    length = 10;
-    width = 10;
-    constructor(length = m_length, width = m_width, parentCooridor = null){
+    constructor(height = 10, width = 10,parentHall = null){
         //startingPoint is the [row, col]
-        this.length = length;
+        this.height = height;
         this.width = width;
 
         //the cooridor will decide starting position if there is a parent node with a cooridor being input
         //will overwrite the parents left, right, bottom, or top x and c's depending 
-        this.parent = parentCooridor;
+        this.parentHall = parentHall;
         if(this.parentCooridor != null){
 
         }
@@ -120,7 +124,10 @@ class Room{
             top: [],
             bottom: []
         }
-        //construct the room with all of its nodes
+        this.visited = false
+        //construct the room with halls
+        this.halls = []
+        this.removedHalls = []
         this.roomContents = this.constructRoom();
     }
     constructRoom(){
@@ -134,11 +141,12 @@ class Room{
         return this.roomContents;
     }
 
+
     constructFirstRoom(area){
         for (var i = 0; i < this.width; i++)//row
         {
             let roomRow = [];
-            for(var j = 0; j < this.length; j++)//col
+            for(var j = 0; j < this.height; j++)//col
             {
                 //get all the logic for the walls
                 let wallBooleans = this.isWall(i, j);
@@ -154,17 +162,17 @@ class Room{
     //record indices that can place a cooridor in the room
     buildViableCooridors(wall, position){
         if(!wall.corner){
-            if(wall.left){
-                this.viableSides.left.push(position)
-            }
-            else if(wall.right){
-                this.viableSides.right.push(position)
-            }
-            else if(wall.top){
+            if(wall.top){
                 this.viableSides.top.push(position)
             }
             else if(wall.bottom){
                 this.viableSides.bottom.push(position)
+            }
+            else if(wall.right){
+                this.viableSides.right.push(position)
+            }
+            else if(wall.left){
+                this.viableSides.left.push(position)
             }
 
         }
@@ -172,10 +180,14 @@ class Room{
 
     isWall(row, col){
         //all directions walls are in
-        const isLeft = (col == 0 && row < this.length);
-        const isRight = (col == this.length-1 && row < this.width);
-        const isTop = (row == 0);
-        const isBottom = (row == this.length - 1);
+        // const isLeft = (col == 0 && row < this.width)
+        // const isRight = (col == this.height - 1 && row < this.width)
+        // const isTop = (col < this.height - 1 && row == 0)
+        // const isBottom = (row == this.height)
+        const isTop = (row == 0)
+        const isBottom = (row == this.width - 1)
+        const isLeft = (col == 0)
+        const isRight = (col == this.height - 1)
         //corner cases
         const isTopLeft = isLeft && isTop;
         const isTopRight = isRight && isTop;
@@ -196,6 +208,44 @@ class Room{
         }
     }
 
+    updatePosition(position){
+        for(var i = 0; i < this.width; i++){
+            for(var j = 0; j < this.height; j++){
+                this.roomContents[i][j].position = [this.roomContents[i][j].position[0] + position[0],this.roomContents[i][j].position[1] + position[1]]
+            }
+        }
+    }
+
+    updateSide(key, position){
+        var newArr = []
+        for(var ele in this.viableSides[key]){
+            newArr.push([ele[0] + position[0], ele[1] + position[1]])
+        }
+        this.viableSides[key] = newArr
+    }
+
+    updateViableSides(position){
+        this.updateSide("left", position)
+        this.updateSide("righ", position)
+        this.updateSide("top", position)
+        this.updateSide("bottom", position)
+    }
+
+    changePosition(position){
+        //where position is the position of the whole map wanted, will be from top left starting
+
+        //update regular room nodes
+        this.updatePosition(position)
+        //update halls to new position
+        // this.updateViableSides(position)
+    }
+
+    removeRoomCooridors(directions){
+        if(this.halls){
+            
+        }
+    }
+
     buildCooridor(direction){
         //direction is the input from map that will 
         //determine where to put something
@@ -205,28 +255,35 @@ class Room{
         switch(direction){
             case 'l':
                 randomPosition = this.viableSides.left.random()
+                break;
             case 'r':
                 randomPosition = this.viableSides.right.random()
+                break;
             case 't':
                 randomPosition = this.viableSides.top.random()
+                break;
             case 'b':
                 randomPosition = this.viableSides.bottom.random()
+                break;
             default:
                 break
         }
-        var row = randomPosition[0]
-        var col = randomPosition[1]
-        console.log("The random position is ", row, col)
+        if(randomPosition == null){
+            return
+        }
+        const row = randomPosition[0]
+        const col = randomPosition[1]
         //take the roomView attribute of the node
+
+        //create the node and reference which direction it is to the room
         var cooridorNode = new Node('H', [row,col])
         cooridorNode.createCooridor(direction)
-        //changes the x to become a cooridor, H
-        this.roomContents[col][row] = cooridorNode
+        cooridorNode.direction = direction
+        this.halls.push(cooridorNode)
+        //assign back to the room
+        this.roomContents[row][col] = cooridorNode
     }
     //rooms could be different size, so go off the smaller room for merging
-    mergeRoom(){
-
-    }
 
 }
 //from https://stackoverflow.com/questions/5915096/get-random-item-from-javascript-array, because looked simple and elegant
@@ -234,4 +291,7 @@ Array.prototype.random = function () {
     return this[Math.floor((Math.random()*this.length))];
   }
 
-export default Room
+  module.exports = {
+      Room,
+      Node
+  }
