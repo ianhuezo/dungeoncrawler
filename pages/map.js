@@ -27,7 +27,7 @@ class Map{
     createRooms(roomNumber){
 
         var roomCount = roomNumber
-        var randomSize = this.randomSize(5, 7)
+        var randomSize = [5,7]
         var roomNode = new Room(randomSize[0], randomSize[1])
         // //create some halls
         var halls = this.generateHalls(2)
@@ -54,334 +54,121 @@ class Map{
                     this.placeRoom(rooms[i])
                     queue.push(rooms[i])
                 }
-                randomCount -= 1
             }
-            randomCount -= 1
+            return
         }
 
 
     }
 //methods for the right
-    searchRightColPosition(rowIdx, colSpan){
+    rightColPositions(callback){
+        var colSpan = arguments[0]
+        var rowIdx = arguments[1]
+        var board = arguments[2]
         var l = colSpan[0]
         var r = colSpan[1]
-        var span = r - l
-        var counter = 0
-        //if the index is not filled then you're fine, return r
-        if(this.board[rowIdx][r].filled == false){
-            return [l,r]
-        }
-        //else if its a bad index binary search for a good one unless there isn't one
-        else{
-            while(this.board[rowIdx][r].filled == true && counter < 3){
-                var half = Math.floor((span/2) + l)
-                console.log('Right col is readjusting...')
-                if(this.board[rowIdx][half].filled == false){
-                    return [l,half]
-                }
-                else{
-                    span = half - 1
-                }
-                counter += 1
-            }
-        }
-        return null
-    }
-    //shared method for both left and right
-    searchTopBottomRowPosition(rowSpan, colIdx){
-        //returns an array of the top and bottom indices for the rows
-        var t = rowSpan[0] + 1
-        var b = rowSpan[1] + 1
-        //the span of the rows
-        var span = Math.abs(t-b)
-        //offset by half
-        t = t - Math.floor(span/3)
-        if(t < 0){
-            t = 0
-        }
-        b = b - Math.floor(span/3)
-        var counter = 0
 
-        //search both top and bottom for a good offset
-        if(this.board[t][colIdx].filled == false && this.board[b][colIdx].filled == false){
-            return [t,b]
-        }
-        //quarters
-        else{
-            while(this.board[t][colIdx].filled == false && this.board[b][colIdx].filled == false && counter < 3){
-                console.log('Top Bottom is readjusting...')
-                var topQuartile = Math.ceil((span/4) + t)
-                //because bottom is lower in count...
-                var bottomQuartile = Math.ceil(b - (span/4))
-                if(this.board[topQuartile][colIdx].filled == true && this.board[bottomQuartile][colIdx].filled == true){
-                    return [topQuartile, bottomQuartile]
-                }
-                //could be more complex statements  depending on the dungeon I decide
-                else{
-                    t = Math.ceil((span/4) + t) + 1
-                    b = Math.ceil(b - (span/4)) - 1
-                }
-                counter += 1
-            }
-        }
-        return null
-    }
-
-    placeRight(pos,dir){
-        //need to account for the offset from the non filled room
-        pos = [pos[0] - 1, pos[1]]
-        var roomSize = this.randomSize(5,7)
-        var rowSpan = [pos[0], pos[0] + roomSize[0]]
-        var colSpan = [pos[1], pos[1] + roomSize[1]]
-        //the positions returned are the span of the element indices
-        var colPosition = this.searchRightColPosition(pos[0],colSpan)
-        //add 1 to cols to avoid looking at the hall's positions
-        var rowPosition = this.searchTopBottomRowPosition(rowSpan,pos[1] + 1)
-
-        if(rowSize  < 4 || colSize < 4 || rowPosition == null || colPosition == null){
-            return null
-        }
-
-        //position from the top left
-        var rowSize = Math.abs(rowPosition[1] - rowPosition[0])
-        var colSize = Math.abs(colPosition[1] - colPosition[0])
-        var room = new Room(rowSize, colSize)
-        //position the room
-        var newPosition = [rowPosition[0], colPosition[0]]
-        const halls = this.generateHalls(2)
-        for(var i = 0; i < halls.length; i++){
-            if(halls[i] == dir || this.roomCounter == 0){
-                continue
-            }
-            room.buildCooridor(halls[i])
-            this.roomCounter -= 1
-        }
-        room.changePosition(newPosition)
-        return room
-    }
-
-    //Methods for the left
-    searchLeftColPosition(rowIdx,colSpan){
-        const l = Math.abs(Math.floor(colSpan[0]))
-        const r = Math.abs(Math.floor(colSpan[1]))
-        const span = Math.abs(r - l)
-        var counter = 0
-        //if the index at l is not filled then you're fine, return
         try{
-            if(this.board[rowIdx][l].filled == false){
+            if(board[rowIdx][r].filled == false){
                 return [l,r]
             }
-            //else if its a bad index binary search for a good one unless there isn't one
             else{
-                while(this.board[rowIdx][r].filled == true && counter < 3){
-                    var half = Math.floor((span/4) + l)
-                    console.log('Left col is readjusting...')
-                    if(this.board[rowIdx][half].filled == false){
-                        return [l,half]
+                return null
+            }
+        }
+        catch(e){
+            console.log('column position is null with',l,r)
+        }
+    }
+    //shared method for both left and right
+    rightRowPositions(callback){
+        var rowSpan = arguments[0]
+        var colIdx = arguments[1] + 1
+        var board = arguments[2]
+        //get top and bottom
+        var t = rowSpan[0]
+        var b = rowSpan[1]
+        //create copies to check reduction bounds
+        var originalT = t
+
+        var counter = 0
+
+        var span = Math.abs(t-b)
+        //reduce by more than a half because of offsets
+        t = t - Math.floor((span/3))
+        b = b - Math.floor(span/3)
+        //update the span
+        span = Math.abs(t - b)
+        board[24][45].filled = true
+        board[25][45].filled = true
+        board[26][45].filled = true
+        try{
+            //if nothing has to be done return the positions as is
+            if(board[t][colIdx].filled == false && board[b][colIdx].filled == false &&//checks if the board is filled there
+                board[t][colIdx-1].type !== 'H' && board[b][colIdx-1] !== 'H'){//checks the bounds to make hall is not in the empty spaces
+                console.log('returning original')
+                return [t,b]
+            }
+            else{
+                while(((board[t][colIdx].filled == true || board[b][colIdx].filled == true) ||
+                      (board[t][colIdx-1].type !== 'H' || board[b][colIdx-1].type !== 'H')) && 
+                      counter < 3){
+                    console.log('reducing')
+                    //top is occupied, reduce by a quarter, usually just 1 because rooms are small right now
+                    if(board[t][colIdx].filled == true){
+                        t = t + Math.floor(span/4)
                     }
-                    else{
-                        span = half - 1
+                    //bot is occupied, reduce by a quarter, usually just 1 because rooms are small right now
+                    if(board[b][colIdx].filled == true){
+                        b = b - Math.floor(span/4)
                     }
+                    //return the updated positions if the positions are not filled
+                    if(board[t][colIdx].filled == false && board[b][colIdx].filled == false && originalT >= t && t < b){
+                        return [t,b]
+                    }
+                    //update the span
+                    span = Math.abs(t-b)
+                    //update counter
                     counter += 1
                 }
             }
-            return null
+
         }
         catch(e){
-            console.log(rowIdx, l, r)
+            console.log('row position is null with top:${t} and bottom: ${b}')
+            return null
         }
-
+        return null
     }
-    
-    placeLeft(pos,dir){
-        //create the offsets for position and create the roomsize
-        const offset = [pos[0] - 1, pos[1]]
-        const roomSize = this.randomSize(5,7)
 
-        const rowSpan = [offset[0], offset[0] + roomSize[1]]
-        const colSpan = [offset[1] - roomSize[1] + 1, offset[1]]
-
-        //the positions returned are the span of the element indices
-        const colPosition = this.searchLeftColPosition(rowSpan[0],colSpan)
-        const rowPosition = this.searchTopBottomRowPosition(rowSpan,pos[1] + 1)
-
-        if(rowSize  < 4 || colSize < 4 || rowPosition == null || colPosition == null){
+    //goes to generateRoom for generateRooms()
+    generateRoom(rowcallback, colcallback, rowSpan, colSpan, direction){
+        var board = this.board
+        const rowPosition = rowcallback(rowSpan, colSpan[0], board)
+        const colPosition = colcallback(colSpan, rowSpan[0], board)
+        if(rowPosition == null || colPosition == null){
+            console.log('The positions are ', rowPosition, colPosition)
             return null
         }
 
         const rowSize = Math.abs(rowPosition[1] - rowPosition[0])
         const colSize = Math.abs(colPosition[1] - colPosition[0])
-
-        //create and place the final room
-        const room = new Room(rowSize, colSize)
         const position = [rowPosition[0], colPosition[0]]
 
-        var halls = this.generateHalls(2)
+        const room = new Room(rowSize, colSize)
+        const halls = this.generateHalls(2)
         for(var i = 0; i < halls.length; i++){
-            if(halls[i] == dir || this.roomCounter == 0){
+            if(halls[i] == direction ){
                 continue
             }
             room.buildCooridor(halls[i])
-            this.roomCounter -= 1
         }
+
         room.changePosition(position)
         return room
-    }
-    //top logic 
-    placeTop(pos,dir){
-        //create the offsets for position and create the roomsize
-        const offset = [pos[0] + 1, pos[1]]
-        const roomSize = this.randomSize(5,7)
 
-        const rowSpan = [offset[0] - roomSize[1], offset[0]]
-        const colSpan = [offset[1], offset[1] + roomSize[1]]
-
-        //the positions returned are the span of the element indices
-        const rowPosition = this.searchTopRowPosition(colSpan[0],rowSpan)
-        const colPosition = this.searchLeftRightPosition(colSpan, rowSpan[0])
-
-        if(rowSize  < 4 || colSize < 4 || rowPosition == null || colPosition == null){
-            return null
-        }
-
-        const rowSize = Math.abs(rowPosition[1] - rowPosition[0])
-        const colSize = Math.abs(colPosition[1] - colPosition[0])
-
-        const room = new Room(rowSize, colSize)
-        var halls = this.generateHalls(2)
-        for(var i = 0; i < halls.length; i++){
-            if(halls[i] == dir || this.roomCounter == 0){
-                continue
-            }
-            room.buildCooridor(halls[i])
-            this.roomCounter -= 1
-        }
-        room.changePosition([rowPosition[0], colPosition[0]])
-        return room
     }
 
-    searchLeftRightPosition(colSpan, rowIdx){
-        var t = Math.abs(colSpan[0])
-        var b = Math.abs(colSpan[1])
-        //the span of the rows
-        var span = Math.abs(t-b)
-        //offset by half
-        t = t - Math.floor(span/3)
-        b = b - Math.floor(span/3)
-        t = Math.abs(t)
-        b = Math.abs(b)
-        rowIdx = Math.abs(rowIdx)
-        var counter = 0
-
-        //search both top and bottom for a good offset
-        if(this.board[rowIdx][t].filled == false && this.board[rowIdx][b].filled == false){
-            return [t,b]
-        }
-        //quarters
-        else{
-            while(this.board[rowIdx][t].filled == false && this.board[rowIdx][b].filled == false && counter < 3){
-                var topQuartile = Math.ceil((span/4) + t)
-                //because bottom is lower in count...
-                var bottomQuartile = Math.ceil(b - (span/4))
-                if(this.board[rowIdx][topQuartile].filled == true && this.board[rowIdx][bottomQuartile].filled == true){
-                    return [topQuartile, bottomQuartile]
-                }
-                //could be more complex statements  depending on the dungeon I decide
-                else{
-                    t = Math.ceil((span/4) + t) + 1
-                    b = Math.ceil(b - (span/4)) - 1
-                }
-                counter += 1
-            }
-        }
-        return null
-    }
-
-    searchTopRowPosition(colIndex, rowSpan){
-        var l = Math.abs(Math.floor(rowSpan[0]))
-        var r = Math.abs(Math.floor(rowSpan[1]))
-        var span = Math.abs(l-r)
-        var counter = 0
-        //if the index at l is not filled then you're fine, return 
-        if(this.board[l][colIndex].filled == false){
-            return [l,r]
-        }
-        //else if its a bad index binary search for a good one unless there isn'l one
-        else{
-            while(this.board[l][colIndex].filled == true && counter < 3){
-                console.log('Top row is readjusting...')
-                var half = Math.floor(l + (span/4))
-                if(this.board[half][colIndex].filled == false){
-                    return [half,r]
-                }
-                else{
-                    span = half + 1
-                }
-                counter += 1
-            }
-        }
-        return null
-    }
-
-    searchBottomRowPosition(colIndex, rowSpan){
-        var l = rowSpan[0]
-        var r = rowSpan[1]
-        var span = Math.abs(l-r)
-        var counter = 0
-        //if the index at l is not filled then you're fine, return 
-        if(this.board[r][colIndex].filled == false){
-            return [l,r]
-        }
-        //else if its a bad index binary search for a good one unless there isn'l one
-        else{
-            while(this.board[l][colIndex].filled == true && counter < 3){
-                var half = Math.floor(r - (span/4))
-                console.log('Bottom row is readjusting...')
-                if(this.board[half][colIndex].filled == false){
-                    return [half,r]
-                }
-                else{
-                    span = half - 1
-                }
-                counter += 1
-            }
-        }
-        return null
-    }
-
-    //bottom room logic
-
-    placeBottom(pos,dir){
-        //create the offsets for position and create the roomsize
-        const offset = [pos[0] , pos[1]]
-        const roomSize = this.randomSize(5,7)
-
-        const rowSpan = [offset[0], offset[0] + roomSize[0]]
-        const colSpan = [offset[1], offset[1] + roomSize[1]]
-
-        //the positions returned are the span of the element indices
-        const rowPosition = this.searchTopRowPosition(colSpan[0],rowSpan)
-        const colPosition = this.searchLeftRightPosition(colSpan, rowSpan[0])
-
-        if(rowSize  < 4 || colSize < 4 || rowPosition == null || colPosition == null){
-            return null
-        }
-
-        const rowSize = Math.abs(rowPosition[1] - rowPosition[0])
-        const colSize = Math.abs(colPosition[1] - colPosition[0])
-
-        const room = new Room(rowSize, colSize)
-        var halls = this.generateHalls(2)
-        for(var i = 0; i < halls.length; i++){
-            if(halls[i] == dir || this.roomCounter == 0){
-                continue
-            }
-            room.buildCooridor(halls[i])
-            this.roomCounter -= 1
-        }
-        room.changePosition([rowPosition[0], colPosition[0]])
-        return room
-    }
 
 
 //where all rooms are generatred and created, the first room generated will have a large impact on the other rooms created
@@ -391,58 +178,34 @@ class Map{
         var rooms = []
         let newRoom = null
         for(var i = 0; i < len; i++){
+            let roomSize = this.randomSize(5,7)
+            let rowStart = halls[i].position[0]
+            let colStart =  halls[i].position[1]
             switch(halls[i].direction){
                 case 'r':
-                    newRoom = this.placeRight(halls[i].position, 'l') 
-                    if(newRoom){
-                        newRoom.parentHall = halls[i]
+                    //the -1 is to offset the side on the top
+                    var rowSpan = [rowStart - 1, rowStart + roomSize[0] - 1]
+                    //dont need to offset the col because the hall connect what would be the blank space
+                    var colSpan = [colStart , colStart + roomSize[1]]
+                    try{
+                        newRoom = this.generateRoom(this.rightRowPositions, this.rightColPositions, rowSpan, colSpan, 'l')
+                        if(newRoom == null){
+                            continue
+                        }
                         rooms.push(newRoom)
                     }
-                    else{
-                        //remove the cooridor because it's not viable
-                        this.roomCounter += 1
-                        node.removeCooridor(halls[i].direction)
-                        this.placeRoom(node)
+                    catch(e){
+                        console.log('room is null')
                     }
                     break
                 case 'l':
-                    newRoom = this.placeLeft(halls[i].position,'r')
-                    if(newRoom){
-                        newRoom.parentHall = halls[i]
-                        rooms.push(newRoom)
-                    }
-                    // else{
-                    //     //remove the cooridor because it's not viable
-                    //     this.roomCounter += 1
-                    //     node.removeCooridor(halls[i].direction)
-                    //     this.placeRoom(node)
-                    // }
+
                     break
                 case 't':
-                    newRoom = this.placeTop(halls[i].position,'b')
-                    if(newRoom){
-                        newRoom.parentHall = halls[i]
-                        rooms.push(newRoom)
-                    }
-                    // else{
-                    //     //remove the cooridor because it's not viable
-                    //     this.roomCounter += 1a
-                    //     node.removeCooridor(halls[i].direction)
-                    //     this.placeRoom(node)
-                    // }
+
                     break
                 case 'b':
-                    newRoom = this.placeBottom(halls[i].position,'t')
-                    if(newRoom){
-                        newRoom.parentHall = halls[i]
-                        rooms.push(newRoom)
-                    }
-                    // else{
-                    //     //remove the cooridor because it's not viable
-                    //     this.roomCounter += 1
-                    //     node.removeCooridor(halls[i].direction)
-                    //     this.placeRoom(node)
-                    // }
+
                     break
                 default:
                     break
