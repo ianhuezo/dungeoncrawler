@@ -224,27 +224,11 @@ class Room{
         this.viableSides[key] = newArr
     }
 
-    updateViableSides(position){
-        this.updateSide("left", position)
-        this.updateSide("righ", position)
-        this.updateSide("top", position)
-        this.updateSide("bottom", position)
-    }
-
     changePosition(position){
         //where position is the position of the whole map wanted, will be from top left starting
-
-        //update regular room nodes
         this.updatePosition(position)
-        //update halls to new position
-        // this.updateViableSides(position)
     }
 
-    removeRoomCooridors(directions){
-        if(this.halls){
-            
-        }
-    }
 
     buildCooridor(direction){
         //direction is the input from map that will 
