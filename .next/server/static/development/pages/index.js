@@ -418,33 +418,71 @@ module.exports = _interopRequireDefault;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./room */ "./pages/room.js");
-/* harmony import */ var _room__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_room__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _level__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./level */ "./pages/level.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/classCallCheck */ "./node_modules/@babel/runtime-corejs2/helpers/esm/classCallCheck.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/createClass */ "./node_modules/@babel/runtime-corejs2/helpers/esm/createClass.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/possibleConstructorReturn */ "./node_modules/@babel/runtime-corejs2/helpers/esm/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/getPrototypeOf */ "./node_modules/@babel/runtime-corejs2/helpers/esm/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/inherits */ "./node_modules/@babel/runtime-corejs2/helpers/esm/inherits.js");
+/* harmony import */ var _level__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./level */ "./pages/level.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./map */ "./pages/map.js");
+/* harmony import */ var _square__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./square */ "./pages/square.js");
+
+
+
+
+
 var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\index.js";
 
 
 
 
-function Home() {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 7
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_level__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 8
-    },
-    __self: this
-  }));
-}
 
-/* harmony default export */ __webpack_exports__["default"] = (Home);
+var Game =
+/*#__PURE__*/
+function (_React$Component) {
+  Object(_babel_runtime_corejs2_helpers_esm_inherits__WEBPACK_IMPORTED_MODULE_4__["default"])(Game, _React$Component);
+
+  function Game(props) {
+    var _this;
+
+    Object(_babel_runtime_corejs2_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_0__["default"])(this, Game);
+
+    _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_2__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_3__["default"])(Game).call(this, props)); //row col for new map
+
+    _this.map = new _map__WEBPACK_IMPORTED_MODULE_7__["default"](70, 80);
+    var playerPositions = _this.map.playerSquares;
+    _this.randomPosition = playerPositions[0];
+    console.log(_this.randomPosition);
+    return _this;
+  }
+
+  Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Game, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_6___default.a.createElement("div", {
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 18
+        },
+        __self: this
+      }, react__WEBPACK_IMPORTED_MODULE_6___default.a.createElement(_level__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        map: this.map,
+        pixelSize: 8,
+        __source: {
+          fileName: _jsxFileName,
+          lineNumber: 19
+        },
+        __self: this
+      }));
+    }
+  }]);
+
+  return Game;
+}(react__WEBPACK_IMPORTED_MODULE_6___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (Game);
 
 /***/ }),
 
@@ -479,10 +517,9 @@ var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\level.js";
 
 
 var screen = {
-  width: '1000px',
-  height: '800px',
-  backgroundColor: 'grey',
-  margin: '0 auto'
+  width: '50%',
+  height: '100%',
+  backgroundColor: 'black'
 };
 var squareContainer = {
   margin: '0 auto',
@@ -507,8 +544,9 @@ function (_React$Component) {
 
     _this = Object(_babel_runtime_corejs2_helpers_esm_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__["default"])(this, Object(_babel_runtime_corejs2_helpers_esm_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4__["default"])(Level).call(this, props)); //row col for new map
 
-    _this.board = new _map__WEBPACK_IMPORTED_MODULE_6__["default"](100, 80);
-    _this.pixelSize = 8;
+    _this.board = _this.props.map; // this.board = new Map(this.props.rows, this.props.cols);
+
+    _this.pixelSize = _this.props.pixelSize;
     _this.arr2d = _this.board.contents;
     return _this;
   }
@@ -568,7 +606,7 @@ function (_React$Component) {
                   x: offsetX,
                   y: offsetY,
                   size: _this2.pixelSize,
-                  color: "red",
+                  color: "white",
                   node: sub_el,
                   __source: {
                     fileName: _jsxFileName,
@@ -677,12 +715,12 @@ function () {
     this.width = boardWidth;
     this.height = boardlength;
     this.clearedBoard = [];
-    this.removedHalls = []; //initialize the board with a clear state
+    this.removedHalls = [];
+    this.playerMovable = []; //initialize the board with a clear state
 
     this.clear();
     this.board = this.clearedBoard;
-    this.roomCounter = 8;
-    this.createRooms(this.roomCounter);
+    this.createRooms();
   }
 
   Object(_babel_runtime_corejs2_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_1__["default"])(Map, [{
@@ -701,8 +739,7 @@ function () {
     }
   }, {
     key: "createRooms",
-    value: function createRooms(roomNumber) {
-      var roomCount = roomNumber;
+    value: function createRooms() {
       var randomSize = [5, 7];
       var roomNode = new _room__WEBPACK_IMPORTED_MODULE_2__["Room"](randomSize[0], randomSize[1]); // //create some halls
 
@@ -720,7 +757,6 @@ function () {
       this.placeRoom(roomNode);
       var queue = [];
       queue.push(roomNode);
-      var randomCount = 8;
 
       while (queue.length) {
         var node = queue.shift(0);
@@ -801,8 +837,8 @@ function () {
       var counter = 0;
       var span = Math.abs(t - b); //reduce by more than a half because of offsets
 
-      t = t - Math.floor(span / 3);
-      b = b - Math.floor(span / 3); //update the span
+      t = t - Math.floor(span / 4);
+      b = b - Math.floor(span / 4); //update the span
 
       span = Math.abs(t - b);
       var m = t + Math.floor(span / 2);
@@ -823,12 +859,12 @@ function () {
             // console.log('reducing')
             //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
             if (board[t][colIdx].filled == true) {
-              t = t + Math.floor(span / 4);
+              t = t + 1;
             } //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
 
 
             if (board[b][colIdx].filled == true) {
-              b = b - Math.floor(span / 4);
+              b = b - 1;
             } //return the updated positions if the positions are not filled
 
 
@@ -918,7 +954,7 @@ function () {
           return null;
         } else if (board[t][colIdx].filled == true) {
           return null;
-        } else if (board[t][colIdx].filled == false && board[b][colIdx].filled == false) {
+        } else if (board[t][colIdx].filled == false && board[b][colIdx].filled == false && board[t][colIdx + 1].type !== 'H' && board[b][colIdx + 1].type !== 'H') {
           //checks the bounds to make sure hall is not in the empty spaces
           // console.log('returning original')
           return [t, b];
@@ -927,12 +963,12 @@ function () {
             //console.log('reducing')
             //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
             if (board[t][colIdx].filled == true) {
-              t = t + Math.floor(span / 4);
+              t = t + 1;
             } //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
 
 
             if (board[b][colIdx].filled == true) {
-              b = b - Math.floor(span / 4);
+              b = b - 1;
             } //return the updated positions if the positions are not filled
 
 
@@ -987,12 +1023,12 @@ function () {
             // console.log('reducing')
             //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
             if (board[rowIdx][l].filled == true) {
-              l = l + Math.floor(span / 4);
+              l = l + 1;
             } //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
 
 
             if (board[rowIdx][r].filled == true) {
-              r = r - Math.floor(span / 4);
+              r = r - 1;
             } //return the updated positions if the positions are not filled
 
 
@@ -1083,20 +1119,20 @@ function () {
           // console.log('returning original')
           return [l, r];
         } else {
-          while ((board[l][rowIdx].filled == true || board[r][rowIdx].filled == true || board[rowIdx - 1][l].type !== 'H' || board[rowIdx - 1][r].type !== 'H') && counter < 3 && span > 3) {
+          while ((board[l][rowIdx].filled == true || board[r][rowIdx].filled == true) && board[rowIdx - 1][l].type !== 'H' && board[rowIdx - 1][r].type !== 'H' && counter < 3 && span > 4) {
             // console.log('reducing')
             //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
             if (board[rowIdx][l].filled == true) {
-              l = l + Math.floor(span / 4);
+              l = l + 1;
             } //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
 
 
             if (board[rowIdx][r].filled == true) {
-              r = r - Math.floor(span / 4);
+              r = r - 1;
             } //return the updated positions if the positions are not filled
 
 
-            if (board[rowIdx][l].filled == false && board[rowIdx][r].filled == false && originalL >= l && l < r && span > 3 && board[rowIdx - 1][l].type != 'H' && board[rowIdx - 1][r].filled != 'H') {
+            if (board[rowIdx][l].filled == false && board[rowIdx][r].filled == false && originalL >= l && l < r && span > 4 && board[rowIdx - 1][l].type != 'H' && board[rowIdx - 1][r].filled != 'H') {
               return [l, r];
             } //update the span
 
@@ -1107,7 +1143,7 @@ function () {
           }
         }
       } catch (e) {
-        console.log('row position is null with top:${t} and bottom: ${b}');
+        console.log('Stopped creating rows');
         return null;
       }
 
@@ -1173,7 +1209,7 @@ function () {
       var rowSize = Math.abs(rowPosition[1] - rowPosition[0]);
       var colSize = Math.abs(colPosition[1] - colPosition[0]);
 
-      if (rowSize < 4 || colSize < 4) {
+      if (rowSize < 5 || colSize < 5) {
         return null;
       }
 
@@ -1339,16 +1375,26 @@ function () {
           var row = room.contents[i][j].position[0];
           var col = room.contents[i][j].position[1];
 
-          if (this.board[row][col].type !== 'H' && this.board[row][col].filled == false) {
+          if (this.board[row][col].filled == false) {
             this.board[row][col] = room.contents[i][j];
             this.board[row][col].filled = true;
+
+            if (room.contents[i][j].type == 'L' || room.contents[i][j].type == 'H') {
+              this.playerMovable.push([row, col]);
+            }
           } //this will combine the rooms into one bigger room
           else if ((this.board[row][col].type === 'X' || this.board[row][col].type === 'C' || this.board[row][col].type === 'H') && room.contents[i][j].type == 'L') {
               this.board[row][col] = room.contents[i][j];
+              this.playerMovable.push([row, col]);
               this.board[row][col].filled = true;
             }
         }
       }
+    }
+  }, {
+    key: "playerSquares",
+    get: function get() {
+      return this.playerMovable;
     }
   }, {
     key: "contents",
@@ -1393,7 +1439,8 @@ function () {
     this.position = position;
     this.filled = false; //only used for a subset of the nodes, the hallways
 
-    this.direction = ''; //empty tile
+    this.direction = '';
+    this.unit = ''; //empty tile
 
     if (this.roomView == '-') {
       this.type = '-';
@@ -1710,15 +1757,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! zlib */ "zlib");
-/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(zlib__WEBPACK_IMPORTED_MODULE_2__);
 
 var _jsxFileName = "D:\\Programming\\Dungeon Crawler\\pages\\square.js";
-
  //a 10x10 square when border is included
 
 var squareStyle = {
-  border: '0.3px solid black',
   fontSize: 0,
   letterSpacing: '-1px',
   display: 'inline-block'
@@ -1730,6 +1773,7 @@ function Square(props) {
     top: props.y + 'px',
     width: props.size + 'px',
     height: props.size + 'px',
+    position: props.pos || 'static',
     backgroundColor: props.color
   };
   var node = props.node;
@@ -1737,7 +1781,7 @@ function Square(props) {
     style: _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_0___default()(squareStyle, position),
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24
+      lineNumber: 23
     },
     __self: this
   });
@@ -1855,17 +1899,6 @@ module.exports = require("core-js/library/fn/symbol/iterator");
 /***/ (function(module, exports) {
 
 module.exports = require("react");
-
-/***/ }),
-
-/***/ "zlib":
-/*!***********************!*\
-  !*** external "zlib" ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("zlib");
 
 /***/ })
 

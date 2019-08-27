@@ -9,6 +9,7 @@ class Node{
         this.filled = false
         //only used for a subset of the nodes, the hallways
         this.direction = ''
+        this.unit = ''
         
         //empty tile
         if(this.roomView == '-'){

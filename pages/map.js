@@ -8,11 +8,11 @@ class Map{
         this.height = boardlength;
         this.clearedBoard = [];
         this.removedHalls = [];
+        this.playerMovable = []
         //initialize the board with a clear state
         this.clear()
         this.board = this.clearedBoard
-        this.roomCounter = 8
-        this.createRooms(this.roomCounter)
+        this.createRooms()
     }
 
     clear(){
@@ -26,9 +26,8 @@ class Map{
         }
     }
     
-    createRooms(roomNumber){
+    createRooms(){
 
-        var roomCount = roomNumber
         var randomSize = [5,7]
         var roomNode = new Room(randomSize[0], randomSize[1])
         // //create some halls
@@ -46,7 +45,6 @@ class Map{
 
         var queue = []
         queue.push(roomNode)
-        var randomCount = 8
         while(queue.length ){
             var node = queue.shift(0)
             if(node)
@@ -122,8 +120,8 @@ class Map{
 
         var span = Math.abs(t-b)
         //reduce by more than a half because of offsets
-        t = t - Math.floor((span/3))
-        b = b - Math.floor(span/3)
+        t = t - Math.floor((span/4))
+        b = b - Math.floor(span/4)
         //update the span
         span = Math.abs(t - b)
         var m = t + Math.floor(span/2)
@@ -147,11 +145,11 @@ class Map{
                     // console.log('reducing')
                     //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[t][colIdx].filled == true){
-                        t = t + Math.floor(span/4)
+                        t = t + 1
                     }
                     //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[b][colIdx].filled == true){
-                        b = b - Math.floor(span/4)
+                        b = b - 1
                     }
                     //return the updated positions if the positions are not filled
                     if(board[t][colIdx].filled == false && board[b][colIdx].filled == false && originalT >= t && t < b && span > 3 &&
@@ -239,7 +237,8 @@ class Map{
             else if(board[t][colIdx].filled == true){
                 return null
             }
-            else if(board[t][colIdx].filled == false && board[b][colIdx].filled == false){//checks the bounds to make sure hall is not in the empty spaces
+            else if(board[t][colIdx].filled == false && board[b][colIdx].filled == false  &&
+                board[t][colIdx+1].type !== 'H' && board[b][colIdx+1].type !== 'H'){//checks the bounds to make sure hall is not in the empty spaces
                 // console.log('returning original')
                 return [t,b]
             }
@@ -250,11 +249,11 @@ class Map{
                     //console.log('reducing')
                     //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[t][colIdx].filled == true){
-                        t = t + Math.floor(span/4)
+                        t = t + 1
                     }
                     //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[b][colIdx].filled == true){
-                        b = b - Math.floor(span/4)
+                        b = b - 1
                     }
                     //return the updated positions if the positions are not filled
                     if(board[t][colIdx].filled == false && board[b][colIdx].filled == false && originalT >= t && t < b && span > 3 &&
@@ -311,11 +310,11 @@ class Map{
                     // console.log('reducing')
                     //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[rowIdx][l].filled == true){
-                        l = l + Math.floor(span/4)
+                        l = l + 1
                     }
                     //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[rowIdx][r].filled == true){
-                        r = r - Math.floor(span/4)
+                        r = r - 1
                     }
                     //return the updated positions if the positions are not filled
                     if(board[rowIdx][l].filled == false && board[rowIdx][r].filled == false && originalL >= l && l < r && span > 3 &&
@@ -401,20 +400,20 @@ class Map{
                 return [l,r]
             }
             else{
-                while(((board[l][rowIdx].filled == true || board[r][rowIdx].filled == true) ||
-                      (board[rowIdx-1][l].type !== 'H' || board[rowIdx-1][r].type !== 'H')) && 
-                      counter < 3 && span > 3){
+                while(((board[l][rowIdx].filled == true || board[r][rowIdx].filled == true) &&
+                      (board[rowIdx-1][l].type !== 'H' && board[rowIdx-1][r].type !== 'H')) && 
+                      counter < 3 && span > 4){
                     // console.log('reducing')
                     //top is occupied, reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[rowIdx][l].filled == true){
-                        l = l + Math.floor(span/4)
+                        l = l + 1
                     }
                     //bot is occupied,  reduce by a quarter of current span, usually just 1 because rooms are small right now
                     if(board[rowIdx][r].filled == true){
-                        r = r - Math.floor(span/4)
+                        r = r - 1
                     }
                     //return the updated positions if the positions are not filled
-                    if(board[rowIdx][l].filled == false && board[rowIdx][r].filled == false && originalL >= l && l < r && span > 3 &&
+                    if(board[rowIdx][l].filled == false && board[rowIdx][r].filled == false && originalL >= l && l < r && span > 4 &&
                         board[rowIdx-1][l].type != 'H' && board[rowIdx-1][r].filled != 'H'){
                         return [l,r]
                     }
@@ -427,7 +426,7 @@ class Map{
 
         }
         catch(e){
-            console.log('row position is null with top:${t} and bottom: ${b}')
+            console.log('Stopped creating rows')
             return null
         }
         return null
@@ -482,7 +481,7 @@ class Map{
 
         const rowSize = Math.abs(rowPosition[1] - rowPosition[0])
         const colSize = Math.abs(colPosition[1] - colPosition[0])
-        if(rowSize < 4 || colSize < 4){
+        if(rowSize < 5 || colSize < 5){
             return null
         }
         const position = [rowPosition[0], colPosition[0]]
@@ -620,19 +619,26 @@ class Map{
             for(var j = 0; j < colLength; j++){
                 var row = room.contents[i][j].position[0]
                 var col = room.contents[i][j].position[1]
-                if(this.board[row][col].type !== 'H' && this.board[row][col].filled == false)
+                if(this.board[row][col].filled == false)
                 {
                     this.board[row][col] = room.contents[i][j]
                     this.board[row][col].filled = true
+                    if( room.contents[i][j].type == 'L' || room.contents[i][j].type == 'H'){
+                        this.playerMovable.push([row,col])
+                    }
                 }
                 //this will combine the rooms into one bigger room
                 else if((this.board[row][col].type === 'X' || this.board[row][col].type === 'C' || this.board[row][col].type === 'H') && 
                 room.contents[i][j].type == 'L'){
                     this.board[row][col] = room.contents[i][j]
+                    this.playerMovable.push([row,col])
                     this.board[row][col].filled = true
                 }
             }
         }
+    }
+    get playerSquares(){
+        return this.playerMovable;
     }
 
     get contents(){

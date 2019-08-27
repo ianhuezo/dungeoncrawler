@@ -4,10 +4,9 @@ import Square from './square'
 
 
 const screen = {
-    width: '1000px',
-    height: '800px',
-    backgroundColor: 'grey',
-    margin: '0 auto',
+    width: '50%',
+    height: '100%',
+    backgroundColor: 'black',
 }
 
 const squareContainer = {
@@ -27,8 +26,9 @@ class Level extends React.Component{
     constructor(props){
         super(props);
         //row col for new map
-        this.board = new Map(100, 80);
-        this.pixelSize = 8;
+        this.board = this.props.map
+        // this.board = new Map(this.props.rows, this.props.cols);
+        this.pixelSize = this.props.pixelSize;
         this.arr2d = this.board.contents
         
 
@@ -55,7 +55,7 @@ class Level extends React.Component{
                 else if(sub_el.type == 'L')
                 {
                     {id += 1}
-                    return <Square key={id} x={offsetX} y={offsetY} size={this.pixelSize}  color='red' node={sub_el}/>
+                    return <Square key={id} x={offsetX} y={offsetY} size={this.pixelSize}  color='white' node={sub_el}/>
                 }
                 //hallways
                 else if(sub_el.type == 'H')

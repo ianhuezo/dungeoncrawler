@@ -1,12 +1,10 @@
 import React from 'react'
-import { Z_BLOCK } from 'zlib';
 
 //a 10x10 square when border is included
 const squareStyle = {
-    border: '0.3px solid black',
     fontSize: 0,
     letterSpacing: '-1px',
-    display: 'inline-block'
+    display: 'inline-block',
 }
 
 function Square(props){
@@ -15,6 +13,7 @@ function Square(props){
         top: props.y + 'px',
         width: props.size + 'px',
         height: props.size + 'px',
+        position: props.pos || 'static',
         backgroundColor: props.color
     }
 
